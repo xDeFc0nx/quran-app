@@ -15,7 +15,7 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
   const [selected, setSelected] = useState<string>(tabs[0]);
 
   return (
-    <div className="flex flex-wrap items-center justify-around gap-4 p-2 border-solid border-white border-b-[1px]">
+    <div className="flex flex-wrap items-center justify-around gap-4 p-2">
       <Image src="/logo.png" alt="Logo" width={100} height={100} />
       <div>
         {tabs.map((tab) => (
