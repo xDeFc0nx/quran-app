@@ -5,10 +5,10 @@ export default function Home() {
     <div className="">
       <NavTabs
         tabs={[
-          'Profile',
-          'Search',
-          'About Us',
-          'Contact Us',
+          'Home',
+          'FEATURES',
+          'Collection',
+          'Qibla',
           'Settings'
         ]}
       />
