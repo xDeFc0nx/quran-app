@@ -4,7 +4,7 @@ import { Home as HomeIcon, Search, Bell, User } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="w-full">
+    <>
       {/* NavTabs visible only on md and larger screens */}
       <div className="hidden md:block">
         <NavTabs
@@ -13,7 +13,7 @@ export default function Home() {
       </div>
 
       {/* AnimatedDock visible only on screens smaller than md */}
-      <div className="fixed bottom-4 left-0 right-0 block md:hidden">
+      <div className="w-full fixed bottom-4 flex items-center justify-center border-t-[1px] border-white md:hidden">
         <AnimatedDock
           items={[
             {
@@ -37,9 +37,8 @@ export default function Home() {
               title: "Profile",
             },
           ]}
-          smallClassName="w-full px-4"
         />
       </div>
-    </div>
+    </>
   );
 }
