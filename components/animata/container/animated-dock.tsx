@@ -78,7 +78,7 @@ function DockIcon({
   });
 
   const [isHovered, setIsHovered] = useState(false);
-  isHovered // State for hover effect
+  console.log(isHovered) // State for hover effect
 
   return (
     <Link href={href}>
