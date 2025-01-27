@@ -17,6 +17,7 @@ export default {
         exBlue: "#0E1D3E",
         logoGray: "#634E4F",
         logoBlue: "#65969E",
+        logoWhite: "#FCFFFF",
       },
     },
   },

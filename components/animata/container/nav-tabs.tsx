@@ -40,7 +40,7 @@ const Tab = ({ text, selected, setSelected }: TabProps) => {
         <motion.span
           layoutId="tabs"
           transition={{ type: "spring", duration: 0.5 }}
-          className="absolute inset-0 rounded-sm bg-gradient-to-r from-cyan-700 to-red-400"
+          className="absolute inset-0 rounded-sm bg-gradient-to-r from-logoGray to-logoBlue"
         />
       )}
     </button>
