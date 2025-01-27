@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "../../../libs/utils"; // Import utility for conditional class names
+import { cn } from "../../../lib/utils"; // Import utility for conditional class names
 import {
   MotionValue,
   motion,
