@@ -33,7 +33,12 @@ export default function RootLayout({
         {/* NavTabs visible only on md and larger screens */}
         <div className="hidden md:block">
           <NavTabs
-            tabs={["Profile", "Search", "About Us", "Contact Us", "Settings"]}
+            tabs={[
+              'Home',
+              'FEATURES',
+              'Collection',
+              'Qibla',
+              'Settings']}
           />
         </div>
 
