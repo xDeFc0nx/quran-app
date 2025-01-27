@@ -1,5 +1,6 @@
 "use client";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import Link from "next/link";
 import React from "react";
 
 export function HeroSection() {
@@ -18,9 +19,9 @@ export function HeroSection() {
           password reset emails, or promotional campaigns, MailJet has got you
           covered.
         </p> */}
-        <button className="bg-white rounded-full w-fit text-black px-4 py-2">
+        <Link href={"#"} className="bg-white rounded-full w-fit text-black px-4 py-2 z-10">
           Debug now
-        </button>
+        </Link>
       </div>
       <BackgroundBeams />
     </div>
