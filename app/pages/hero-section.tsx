@@ -12,13 +12,6 @@ export function HeroSection() {
           helping the Ummah stay seamlessly connected to their Deen wherever
           they are
         </h1>
-        {/* <p className="text-neutral-500 max-w-4xl mx-auto my-2 text-lg text-center relative z-10">
-          Welcome to MailJet, the best transactional email service on the web.
-          We provide reliable, scalable, and customizable email solutions for
-          your business. Whether you&apos;re sending order confirmations,
-          password reset emails, or promotional campaigns, MailJet has got you
-          covered.
-        </p> */}
         <Link href={"#"} className="bg-white rounded-full w-fit text-black px-4 py-2 z-10">
           Debug now
         </Link>
