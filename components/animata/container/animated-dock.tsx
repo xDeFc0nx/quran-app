@@ -2,7 +2,6 @@
 
 import { cn } from "../../../lib/utils"; // Import utility for conditional class names
 import {
-  MotionValue,
   motion,
   useMotionValue,
   useSpring,
