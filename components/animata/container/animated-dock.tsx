@@ -34,7 +34,6 @@ export default function AnimatedDock({ items, className }: AnimatedDockProps) {
 
 // Component for individual icons in the dock
 function DockIcon({
-  title,
   icon,
   href,
 }: {
@@ -78,7 +77,8 @@ function DockIcon({
     damping: 12,
   });
 
-  const [isHovered, setIsHovered] = useState(false); // State for hover effect
+  const [isHovered, setIsHovered] = useState(false);
+  isHovered // State for hover effect
 
   return (
     <Link href={href}>
