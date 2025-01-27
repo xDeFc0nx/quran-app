@@ -1,17 +1,9 @@
-import NavTabs from "@/components/animata/container/nav-tabs";
+import { HeroSection } from "./pages/hero-section";
 
 export default function Home() {
   return (
-    <div className="">
-      <NavTabs
-        tabs={[
-          'Home',
-          'FEATURES',
-          'Collection',
-          'Qibla',
-          'Settings'
-        ]}
-      />
-    </div>
+    <>
+      <HeroSection />
+    </>
   );
 }
