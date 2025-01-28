@@ -35,9 +35,9 @@ function calculateCardRotation({
   return { rotationX, rotationY };
 }
 
-export default function CardSkew({ className }: { className?: string }) {
+export default function ShewCard({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const resetRef = useRef<NodeJS.Timeout>();
+  const resetRef = useRef<NodeJS.Timeout>(null);
 
   const update = useCallback(({ x, y }: { x: number; y: number }) => {
     if (!containerRef.current) {

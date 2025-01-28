@@ -4,7 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMousePosition } from "@/hooks/useMoutsePosition";
 
-export default function CardShiny({ className }: { className?: string }) {
+export default function ShinyCard({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
