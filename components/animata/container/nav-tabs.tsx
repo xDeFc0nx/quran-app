@@ -24,7 +24,7 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
 
   return (
     <div
-      className="fixed top-0 left-0 z-50 w-full flex flex-wrap items-center justify-around gap-4 p-4 bg-transparent"
+      className="fixed top-0 left-0 z-50 w-full flex flex-wrap items-center text-center justify-around gap-4 p-4 bg-transparent"
     >
       <Link href="/">
         <Image src="/logo.png" alt="Logo" width={100} height={100} />
