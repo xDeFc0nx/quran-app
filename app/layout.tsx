@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { HomeIcon, Search, Bell, User } from "lucide-react";
 import AnimatedDock from "@/components/animata/container/animated-dock";
 import NavTabs from "@/components/animata/container/nav-tabs";
-import { HomeIcon, Search, Bell, User } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

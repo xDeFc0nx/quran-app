@@ -21,7 +21,7 @@ export default function AnimatedDock({ items, className }: AnimatedDockProps) {
   return (
     <div
       className={cn(
-        "flex h-16 justify-around w-full items-end gap-4 rounded-2xl bg-white/10 px-4 pb-3 dark:bg-black/10 backdrop-blur-sm dark:border-gray-800/30",
+        "flex h-16 justify-around w-full items-end gap-4 px-4",
         className
       )}
     >
@@ -88,10 +88,10 @@ function DockIcon({
         onMouseMove={(e) => mouseXPosition.set(e.pageX)} // Update mouse X position on mouse move
         onMouseLeave={() => mouseXPosition.set(Infinity)} // Reset on mouse leave
         onMouseEnter={() => setIsHovered(true)} // Handle mouse enter
-        className="relative flex aspect-square items-center justify-center rounded-full bg-white/20 text-black shadow-lg backdrop-blur-md dark:bg-black/20 dark:text-white"
+        className="relative flex aspect-square items-center justify-center rounded-full bg-white/5 p-6 shadow-lg backdrop-blur-md text-white"
       >
         <motion.div className="flex items-center justify-around">
-          {icon} {/* Render the icon */}
+          {icon} 
         </motion.div>
       </motion.div>
     </Link>
