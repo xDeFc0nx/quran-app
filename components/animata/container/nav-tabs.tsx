@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation"; // Use next/navigation
 import { motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
 import Image from "next/image";
@@ -10,12 +11,15 @@ interface TabProps {
   text: string;
   selected: boolean;
   href: string;
-  setSelected: React.Dispatch<React.SetStateAction<string>>;
+  onClick: () => void;
 }
 
 export default function NavTabs({ tabs }: { tabs: string[] }) {
-  const sanitizedTabs = tabs.filter((tab) => tab.trim().length > 0); // Filter out invalid tabs
-  const [selected, setSelected] = useState<string>(sanitizedTabs[0]);
+  const pathname = usePathname();
+  const [selected, setSelected] = useState<string>(pathname);
+  useEffect(() => {
+    setSelected(pathname);
+  }, [pathname]);
 
   return (
     <div className="flex flex-wrap items-center justify-around gap-4 p-2">
@@ -23,13 +27,13 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
         <Image src="/logo.png" alt="Logo" width={100} height={100} />
       </Link>
       <div className="flex text-center">
-        {sanitizedTabs.map((tab) => (
+        {tabs.map((tab) => (
           <Tab
+            key={tab}
             href={tab}
             text={tab}
-            selected={selected === tab}
-            setSelected={setSelected}
-            key={tab}
+            selected={selected === getUrl(tab)}
+            onClick={() => setSelected(getUrl(tab))}
           />
         ))}
       </div>
@@ -37,25 +41,15 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
   );
 }
 
-const Tab = ({ text, selected, setSelected, href }: TabProps) => {
-  const url = (href: string): string => {
-    const normalizedHref = href?.trim().toLowerCase() || "";
-    if (!normalizedHref) {
-      console.warn("The href parameter is empty or undefined.");
-      return "/";
-    }
-    return normalizedHref === "home" ? "/" : `/${normalizedHref}`;
-  };
-
+const Tab = ({ text, selected, onClick, href }: TabProps) => {
   return (
     <Link
-      href={url(href)}
-      onClick={() => setSelected(text)}
+      href={getUrl(href)}
+      onClick={onClick}
       className={cn(
-        "relative flex rounded-md p-2 text-sm transition-all",
+        "relative rounded-md p-2 text-sm transition-all",
         selected ? "text-white" : "text-slate-300 hover:font-black"
       )}
-      aria-current={selected ? "page" : undefined}
     >
       <p className="relative z-50 min-w-20">{text}</p>
       {selected && (
@@ -67,4 +61,11 @@ const Tab = ({ text, selected, setSelected, href }: TabProps) => {
       )}
     </Link>
   );
+};
+
+// Utility to generate URLs based on tab names
+const getUrl = (href: string): string => {
+  if (!href) throw new Error("The href parameter is required.");
+  const normalizedHref = href.trim().toLowerCase();
+  return normalizedHref === "home" ? "/" : `/${normalizedHref}`;
 };
