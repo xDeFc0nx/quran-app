@@ -13,6 +13,10 @@ export default function CardsCarousel() {
       <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-neutral-200 font-sans">
         Get to know your iSad.
       </h2>
+      <p>
+        Choose your path: generate Quranic ayahs tailored to your mood, discover
+        random verses for fresh wisdom, or find the Qibla in an instant.
+      </p>
       <Carousel items={cards} />
     </div>
   );
