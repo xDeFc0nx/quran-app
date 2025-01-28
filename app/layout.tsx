@@ -35,7 +35,7 @@ export default function RootLayout({
           <NavTabs
             tabs={[
               'Home',
-              'FEATURES',
+              'Features',
               'Collection',
               'Qibla',
               'Settings']}
