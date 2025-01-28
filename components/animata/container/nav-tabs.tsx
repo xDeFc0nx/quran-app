@@ -17,16 +17,19 @@ interface TabProps {
 export default function NavTabs({ tabs }: { tabs: string[] }) {
   const pathname = usePathname();
   const [selected, setSelected] = useState<string>(pathname);
+
   useEffect(() => {
     setSelected(pathname);
   }, [pathname]);
 
   return (
-    <div className="flex flex-wrap items-center justify-around gap-4 p-2">
+    <div
+      className="fixed top-0 left-0 z-50 w-full flex flex-wrap items-center justify-around gap-4 p-4 bg-transparent"
+    >
       <Link href="/">
         <Image src="/logo.png" alt="Logo" width={100} height={100} />
       </Link>
-      <div className="flex text-center">
+      <div className="flex space-x-4">
         {tabs.map((tab) => (
           <Tab
             key={tab}
@@ -40,6 +43,7 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
     </div>
   );
 }
+
 
 const Tab = ({ text, selected, onClick, href }: TabProps) => {
   return (
