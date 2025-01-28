@@ -166,6 +166,7 @@ export const Card = ({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { onCardClose, currentIndex } = useContext(CarouselContext);
+  console.log(currentIndex)
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
