@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { TextEffect } from "@/components/ui/text-effect";
 import { Sparkles } from "@/components/aceternity/sparkles";
 import MoodCards from "@/components/animata/card/shiny-card";
 
