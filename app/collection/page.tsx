@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
-import { TextEffect } from "@/components/ui/text-effect";
 import { Sparkles } from "@/components/aceternity/sparkles";
 
 export default function CardsCarousel() {
