@@ -4,7 +4,6 @@ import React from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { TextEffect } from "@/components/ui/text-effect";
 import { Sparkles } from "@/components/aceternity/sparkles";
-import ShinyCard from "@/components/animata/card/shiny-card";
 
 export default function CardsCarousel() {
   const cards = data.map((card, index) => (
@@ -12,15 +11,13 @@ export default function CardsCarousel() {
   ));
 
   return (
-    <div className=" flex flex-col justify-center items-start">
+    <div className="flex flex-col justify-center pt-40">
       {/* <h2 className="max-w-7xl mx-auto text-xl md:text-5xl font-bold text-neutral-200 font-sans">
         Choose your path
       </h2> */}
       <Sparkles />
 
       <Carousel items={cards} />
-
-      <ShinyCard />
     </div>
   );
 }
