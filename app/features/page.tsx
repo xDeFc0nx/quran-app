@@ -4,7 +4,7 @@ import React from "react";
 import { Card } from "@/components/ui/apple-cards-carousel";
 import { TextEffect } from "@/components/ui/text-effect";
 import { Sparkles } from "@/components/aceternity/sparkles";
-import ShinyCard from "@/components/animata/card/shiny-card";
+import MoodCards from "@/components/animata/card/shiny-card";
 
 export default function CardsCarousel() {
   const cards = data.map((card, index) => (
@@ -18,7 +18,7 @@ export default function CardsCarousel() {
       </h2> */}
       <Sparkles name="Choose your Mood" />
 
-      <ShinyCard />
+      <MoodCards />
     </div>
   );
 }
