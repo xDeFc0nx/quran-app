@@ -2,11 +2,15 @@
 import React from "react";
 import { SparklesCore } from "../ui/sparkles";
 
-export function Sparkles() {
+type SparkleProp = {
+    name: string;
+}
+
+export function Sparkles({name}: SparkleProp) {
     return (
         <div className="w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
             <h1 className="text-lg md:text-5xl font-bold text-center text-white relative z-20">
-                Choose your path
+                {name}
             </h1>
             <div className="w-[40rem] h-24 relative">
                 {/* Gradients */}

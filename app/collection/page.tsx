@@ -15,7 +15,7 @@ export default function CardsCarousel() {
       {/* <h2 className="max-w-7xl mx-auto text-xl md:text-5xl font-bold text-neutral-200 font-sans">
         Choose your path
       </h2> */}
-      <Sparkles />
+      <Sparkles name="Choose your path" />
 
       <Carousel items={cards} />
     </div>
