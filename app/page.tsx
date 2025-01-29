@@ -1,4 +1,4 @@
-import { HeroSection } from "./pages/hero-section";
+import { HeroSection } from "@/components/aceternity/hero-section";
 
 export default function Home() {
   return (
