@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { RefObject, useCallback, useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -21,7 +21,8 @@ export default function ShinyCard({ className }: { className?: string }) {
     overlayRef.current?.style.setProperty("--y", `${yOffset}px`);
   }, []);
 
-  useMousePosition(containerRef, update);
+  useMousePosition(containerRef as RefObject<HTMLElement>, update);
+
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { RefObject, useCallback, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 import { useMousePosition } from "@/hooks/useMoutsePosition";
@@ -37,7 +37,7 @@ function calculateCardRotation({
 
 export default function ShewCard({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const resetRef = useRef<NodeJS.Timeout>(null);
+  const resetRef = useRef<NodeJS.Timeout>(undefined);
 
   const update = useCallback(({ x, y }: { x: number; y: number }) => {
     if (!containerRef.current) {
@@ -57,7 +57,7 @@ export default function ShewCard({ className }: { className?: string }) {
     containerRef.current.style.setProperty("--y", `${rotationY}deg`);
   }, []);
 
-  useMousePosition(containerRef, update);
+  useMousePosition(containerRef as RefObject<HTMLElement>, update);
 
   return (
     <div
