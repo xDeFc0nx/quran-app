@@ -2,6 +2,9 @@
 import Image from "next/image";
 import React from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { TextEffect } from "@/components/ui/text-effect";
+import { Sparkles } from "@/components/aceternity/sparkles";
+import ShinyCard from "@/components/animata/card/shiny-card";
 
 export default function CardsCarousel() {
   const cards = data.map((card, index) => (
@@ -9,15 +12,15 @@ export default function CardsCarousel() {
   ));
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center">
-      <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-neutral-200 font-sans">
-        Get to know your iSad.
-      </h2>
-      <p>
-        Choose your path: generate Quranic ayahs tailored to your mood, discover
-        random verses for fresh wisdom, or find the Qibla in an instant.
-      </p>
+    <div className=" flex flex-col justify-center items-start">
+      {/* <h2 className="max-w-7xl mx-auto text-xl md:text-5xl font-bold text-neutral-200 font-sans">
+        Choose your path
+      </h2> */}
+      <Sparkles />
+
       <Carousel items={cards} />
+
+      <ShinyCard />
     </div>
   );
 }
@@ -93,3 +96,12 @@ const data = [
     content: <DummyContent />,
   },
 ];
+
+export function TextEffectPerChar() {
+  return (
+    <TextEffect per='char' preset='fade' className="text-lg max-w-2xl ">
+      Generate Quranic ayahs tailored to your mood, discover
+      random verses for fresh wisdom, or find the Qibla in an instant.
+    </TextEffect>
+  );
+}
