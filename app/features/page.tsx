@@ -7,9 +7,9 @@ import { Sparkles } from "@/components/aceternity/sparkles";
 import MoodCards from "@/components/animata/card/shiny-card";
 
 export default function CardsCarousel() {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
-  ));
+  // const cards = data.map((card, index) => (
+  //   <Card key={card.src} card={card} index={index} />
+  // ));
 
   return (
     <div className="flex flex-col justify-center pt-40">
