@@ -32,14 +32,7 @@ export default function RootLayout({
       >
         {/* NavTabs visible only on md and larger screens */}
         <div className="hidden md:block">
-          <NavTabs
-            tabs={[
-              'Home',
-              'Features',
-              'Collection',
-              'Qibla',
-              'Settings']}
-          />
+          <NavTabs tabs={["Home", "Collection", "Features", "Qibla"]} />
         </div>
 
         {children}
