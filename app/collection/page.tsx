@@ -25,7 +25,7 @@ export default function CardsCarousel() {
 const DummyContent = () => {
   return (
     <>
-      {[...new Array(3).fill(1)].map((_, index) => {
+      {[...new Array(3).fill(1)].map((index) => {
         return (
           <div
             key={"dummy-content" + index}
