@@ -1,6 +1,6 @@
 // stores/verseStore.ts
 import { create } from "zustand";
-import { verses } from "./sad";
+import { sadVerses } from "./sad";
 
 type Verse = {
   arabic: string;
@@ -14,9 +14,9 @@ interface VerseStore {
 }
 
 export const useVerseStore = create<VerseStore>((set) => ({
-  verses,
+  verses: sadVerses, // ✅ Assigning `sadVerses` to `verses`
   getRandomVerse: () => {
-    const randomIndex = Math.floor(Math.random() * verses.length);
-    return verses[randomIndex];
+    const randomIndex = Math.floor(Math.random() * sadVerses.length);
+    return sadVerses[randomIndex];
   },
 }));
