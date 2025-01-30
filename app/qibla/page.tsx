@@ -134,7 +134,7 @@ const QiblaCompass: React.FC = () => {
         }}
       >
         <Image
-          src="/images/compass.png" // Replace with the actual compass image path
+          src="/images/qibla.png" // Replace with the actual compass image path
           alt="Compass"
           width={500}
           height={500}
