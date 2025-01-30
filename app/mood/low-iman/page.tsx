@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/mood.module.css';
+import styles from '@/styles/mood.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { sadVerses } from '../store/sad';
+import { sadVerses } from '@/store/sad';
 
 const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
 

@@ -1,0 +1,73 @@
+/* styles/mood.module.css */
+.container {
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .homeButtonContainer {
+    margin: 1rem;
+  }
+  
+  .homeButton {
+    text-decoration: none;
+    color: white;
+    background-color: #0070f3;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+  }
+  
+  .imageSection {
+    margin: 1rem 0;
+  }
+  
+  .natureImage {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .verseSection {
+    margin: 1rem 0;
+  }
+  
+  .verse {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  
+  .translation,
+  .ayahNumber {
+    font-size: 1rem;
+  }
+  
+  .generateButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .bottomBar {
+    margin: 2rem 0;
+  }
+  
+  .bottomBarTitle {
+    font-size: 1.2rem;
+  }
+  
+  .bottomBarButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .bottomButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
