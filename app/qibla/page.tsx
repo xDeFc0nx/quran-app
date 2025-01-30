@@ -10,8 +10,8 @@ const KAABA_LONG = 39.826206; // Kaaba longitude
 const QiblaCompass: React.FC = () => {
   const [isCompassActive, setIsCompassActive] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [qiblaDirection, setQiblaDirection] = useState(0);
   const compassRef = useRef<HTMLDivElement | null>(null);
-  const needleRef = useRef<HTMLImageElement | null>(null);
   const headingRef = useRef<HTMLSpanElement | null>(null);
   const qiblaDirectionRef = useRef<HTMLSpanElement | null>(null);
 
@@ -24,7 +24,7 @@ const QiblaCompass: React.FC = () => {
   const calculateQiblaDirection = (
     userLat: number,
     userLong: number,
-    heading: number
+    heading: number = 0
   ) => {
     const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
     const radiansToDegrees = (radians: number) => radians * (180 / Math.PI);
@@ -44,9 +44,34 @@ const QiblaCompass: React.FC = () => {
     return (bearing - heading + 360) % 360; // Adjust based on heading
   };
 
-  const startCompass = () => {
+  const startCompass = async () => {
     if (!isMobileDevice) {
-      alert("Compass is only supported on mobile devices.");
+      // For desktop, just calculate the Qibla direction based on location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLong = position.coords.longitude;
+          const qiblaDirection = calculateQiblaDirection(userLat, userLong);
+          setQiblaDirection(qiblaDirection);
+
+          if (qiblaDirectionRef.current) {
+            qiblaDirectionRef.current.textContent = qiblaDirection.toFixed(2);
+          }
+
+          if (compassRef.current) {
+            gsap.to(compassRef.current, {
+              rotation: qiblaDirection,
+              duration: 1,
+              ease: "power2.out",
+            });
+          }
+
+          setIsCompassActive(true);
+        },
+        (error) => {
+          alert("Error getting location: " + error.message);
+        }
+      );
       return;
     }
 
@@ -55,6 +80,28 @@ const QiblaCompass: React.FC = () => {
       return;
     }
 
+    // Request permission for iOS
+    const deviceOrientationEvent = window.DeviceOrientationEvent as
+      | (typeof window.DeviceOrientationEvent & {
+          requestPermission?: () => Promise<"granted" | "denied">;
+        })
+      | undefined;
+
+    if (deviceOrientationEvent?.requestPermission) {
+      try {
+        const permissionState = await deviceOrientationEvent.requestPermission();
+        if (permissionState !== "granted") {
+          alert("Permission denied for device orientation.");
+          return;
+        }
+      } catch (error) {
+        alert("Error requesting device orientation permission.");
+        console.log(error);
+        return;
+      }
+    }
+
+    // Get user location
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const userLat = position.coords.latitude;
@@ -63,49 +110,49 @@ const QiblaCompass: React.FC = () => {
         const updateCompass = (event: DeviceOrientationEvent) => {
           if (event.alpha === null) {
             alert(
-              "Unable to retrieve device orientation. Ensure you are using a supported device."
+              "Unable to retrieve device orientation. Ensure sensors are enabled and try a supported browser."
             );
             return;
           }
-          const heading = Math.round(event.alpha);
 
+          const heading = Math.round(event.alpha);
           const qiblaDirection = calculateQiblaDirection(
             userLat,
             userLong,
             heading
           );
 
-          // Update heading and Qibla direction in the DOM
+          // Update UI
           if (headingRef.current)
             headingRef.current.textContent = heading.toString();
           if (qiblaDirectionRef.current)
             qiblaDirectionRef.current.textContent = qiblaDirection.toFixed(2);
 
-          // Animate the compass and Qibla needle
+          // Animate compass
           if (compassRef.current) {
             gsap.to(compassRef.current, {
-              rotation: -heading,
-              duration: 1,
-              ease: "power2.out",
-            });
-          }
-          if (needleRef.current) {
-            gsap.to(needleRef.current, {
-              rotation: qiblaDirection,
+              rotation: -heading + qiblaDirection,
               duration: 1,
               ease: "power2.out",
             });
           }
         };
 
-        window.addEventListener("deviceorientation", updateCompass);
+        if ("ondeviceorientationabsolute" in window) {
+          (window as Window).addEventListener("deviceorientationabsolute", updateCompass);
+        } else if ("ondeviceorientation" in window) {
+          (window as Window).addEventListener("deviceorientation", updateCompass);
+        } else {
+          alert("Device orientation is not supported on this device.");
+          return;
+        }
+
         setIsCompassActive(true);
       },
       (error) => {
-        // Handle geolocation errors
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            alert("Location access denied by the user. Please allow access.");
+            alert("Location access denied. Please allow access.");
             break;
           case error.POSITION_UNAVAILABLE:
             alert("Location information is unavailable.");
@@ -142,6 +189,7 @@ const QiblaCompass: React.FC = () => {
             position: "absolute",
             width: "100%",
             height: "100%",
+            transform: `rotate(${qiblaDirection}deg)`,
           }}
         />
       </div>
@@ -172,4 +220,4 @@ const QiblaCompass: React.FC = () => {
   );
 };
 
-export default QiblaCompass;  
+export default QiblaCompass;
