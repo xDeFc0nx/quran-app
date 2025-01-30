@@ -18,7 +18,7 @@ const moods: Mood[] = [
 
 export default function MoodCards() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-6 max-w-4xl mx-auto m-[-80px] hover:cursor-pointer">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-6 max-w-4xl mx-auto mt-[-60px] hover:cursor-pointer">
       {moods.map((mood) => (
         <ShinyCard key={mood.name} mood={mood} />
       ))}

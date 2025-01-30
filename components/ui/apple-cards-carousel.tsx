@@ -36,7 +36,7 @@ const cards: Card[] = [
 
 export default function StaticCards() {
   return (
-    <div className="flex flex-row justify-center gap-4 py-10">
+    <div className="flex flex-row justify-center gap-4 py-10 mt-[-60px]">
       {cards.map((card, index) => (
         <Card key={index} card={card} />
       ))}
