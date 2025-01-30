@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./styles.module.css";
+import styles from "@/styles/mood.module.css";
 import Image from "next/image";
 
 interface AyahData {
