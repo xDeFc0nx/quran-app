@@ -4,116 +4,212 @@ import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 
-const KAABA_LAT = 21.422487;
-const KAABA_LONG = 39.826206;
-
-// Define the iOS-specific DeviceOrientationEvent interface
-interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
-  requestPermission?: () => Promise<"granted" | "denied">;
-}
+const KAABA_LAT = 21.422487; // Kaaba latitude
+const KAABA_LONG = 39.826206; // Kaaba longitude
 
 const QiblaCompass: React.FC = () => {
-  const [isCompassActive, setIsCompassActive] = useState<boolean>(false);
-  const [qiblaDirection, setQiblaDirection] = useState<number>(0);
-  const [currentHeading, setCurrentHeading] = useState<number>(0);
-  const compassRef = useRef<HTMLDivElement>(null);
+  const [isCompassActive, setIsCompassActive] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [qiblaDirection, setQiblaDirection] = useState(0);
+  const compassRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLSpanElement | null>(null);
+  const qiblaDirectionRef = useRef<HTMLSpanElement | null>(null);
 
-  const degreesToRadians = (degrees: number): number => degrees * (Math.PI / 180);
-  const radiansToDegrees = (radians: number): number => radians * (180 / Math.PI);
+  // Check if the device is mobile
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    setIsMobileDevice(isMobile);
+  }, []);
 
-  function calculateQiblaBearing(
-    userLat: Float32Array,
-    userLon: Float32Array,
-    kaabaLat = 21.4225,
-    kaabaLon = 39.8262
-  ) {
-    const rad = Math.PI / 180;
-    const dLon = (kaabaLon - userLon) * rad;
-    const lat1 = userLat * rad;
-    const lat2 = kaabaLat * rad;
-    const y = Math.sin(dLon) * Math.cos(lat2);
+  const calculateQiblaDirection = (
+    userLat: number,
+    userLong: number,
+    heading: number = 0
+  ) => {
+    const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
+    const radiansToDegrees = (radians: number) => radians * (180 / Math.PI);
+
+    const lat1 = degreesToRadians(userLat);
+    const lat2 = degreesToRadians(KAABA_LAT);
+    const deltaLong = degreesToRadians(KAABA_LONG - userLong);
+
+    const y = Math.sin(deltaLong) * Math.cos(lat2);
     const x =
       Math.cos(lat1) * Math.sin(lat2) -
-      Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-    let bearing = Math.atan2(y, x) / rad;
-    bearing = (bearing + 360) % 360;
-    return bearing;
-  }
+      Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);
 
-  // Request permissions and initialize orientation handling
-  permissionsButton.addEventListener("click", async () => {
-    try {
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        const permission = await DeviceOrientationEvent.requestPermission();
-        if (permission === "granted") {
-          enableCompass();
-        } else {
-          info.innerHTML += "<p>Permission denied for compass access.</p>";
-        }
-      } else {
-        enableCompass();
-      }
-    } catch (error) {
-      info.innerHTML += `<p>Error requesting permissions: ${error.message}</p>`;
-    }
-  });
+    let bearing = radiansToDegrees(Math.atan2(y, x));
+    bearing = (bearing + 360) % 360; // Normalize to 0-360
 
-  function enableCompass() {
-    permissionsButton.style.display = "none";
+    return (bearing - heading + 360) % 360; // Adjust based on heading
+  };
 
-    if (navigator.geolocation) {
+  const startCompass = async () => {
+    if (!isMobileDevice) {
+      // For desktop, just calculate the Qibla direction based on location
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userLat = position.coords.latitude;
-          const userLon = position.coords.longitude;
-          qiblaBearing = calculateQiblaBearing(userLat, userLon);
-          info.innerHTML = `
-              <h2 id="main-head">Qibla Compass</h2>
-              <p class="para">Heading: <span id="current-heading" >0.0</span>°</p>
-              <p class="para">Qibla Direction: <span id="qibla-direction" >${qiblaBearing.toFixed(
-                2
-              )}</span>°</p>
-          `;
+          const userLong = position.coords.longitude;
+          const qiblaDirection = calculateQiblaDirection(userLat, userLong);
+          setQiblaDirection(qiblaDirection);
 
-          window.addEventListener("deviceorientation", handleOrientation);
+          if (qiblaDirectionRef.current) {
+            qiblaDirectionRef.current.textContent = qiblaDirection.toFixed(2);
+          }
+
+          if (compassRef.current) {
+            gsap.to(compassRef.current, {
+              rotation: qiblaDirection,
+              duration: 1,
+              ease: "power2.out",
+            });
+          }
+
+          setIsCompassActive(true);
         },
         (error) => {
-          info.innerHTML = `<p>Error fetching location: ${error.message}</p>`;
+          alert("Error getting location: " + error.message);
         }
       );
+      return;
     }
-  }
 
-  function handleOrientation(event) {
-    let compass = event.webkitCompassHeading || Math.abs(event.alpha - 360);
-    compassImage.style.transform = `rotate(${qiblaBearing - compass}deg)`;
+    if (!("DeviceOrientationEvent" in window)) {
+      alert("Your browser does not support device orientation.");
+      return;
+    }
 
-    const currentHeading = compass.toFixed(1);
-    document.getElementById("current-heading").textContent = currentHeading;
-  }
+    // Request permission for iOS
+    const deviceOrientationEvent = window.DeviceOrientationEvent as
+      | (typeof window.DeviceOrientationEvent & {
+          requestPermission?: () => Promise<"granted" | "denied">;
+        })
+      | undefined;
+
+    if (deviceOrientationEvent?.requestPermission) {
+      try {
+        const permissionState = await deviceOrientationEvent.requestPermission();
+        if (permissionState !== "granted") {
+          alert("Permission denied for device orientation.");
+          return;
+        }
+      } catch (error) {
+        alert("Error requesting device orientation permission.");
+        console.log(error);
+        return;
+      }
+    }
+
+    // Get user location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLong = position.coords.longitude;
+
+        const updateCompass = (event: DeviceOrientationEvent) => {
+          if (event.alpha === null) {
+            alert(
+              "Unable to retrieve device orientation. Ensure sensors are enabled and try a supported browser."
+            );
+            return;
+          }
+
+          const heading = Math.round(event.alpha);
+          const qiblaDirection = calculateQiblaDirection(
+            userLat,
+            userLong,
+            heading
+          );
+
+          // Update UI
+          if (headingRef.current)
+            headingRef.current.textContent = heading.toString();
+          if (qiblaDirectionRef.current)
+            qiblaDirectionRef.current.textContent = qiblaDirection.toFixed(2);
+
+          // Animate compass
+          if (compassRef.current) {
+            gsap.to(compassRef.current, {
+              rotation: -heading + qiblaDirection,
+              duration: 1,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        if ("ondeviceorientationabsolute" in window) {
+          (window as Window).addEventListener("deviceorientationabsolute", updateCompass);
+        } else if ("ondeviceorientation" in window) {
+          (window as Window).addEventListener("deviceorientation", updateCompass);
+        } else {
+          alert("Device orientation is not supported on this device.");
+          return;
+        }
+
+        setIsCompassActive(true);
+      },
+      (error) => {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            alert("Location access denied. Please allow access.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+          case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+          default:
+            alert("An unknown error occurred while accessing location.");
+            break;
+        }
+        console.error("Geolocation error:", error.message);
+      }
+    );
+  };
 
   return (
     <div className="flex flex-col justify-center items-center h-screen text-center gap-5">
-      <div 
+      <div
         ref={compassRef}
-        className="relative w-72 h-72"
+        style={{
+          position: "relative",
+          width: "300px",
+          height: "300px",
+          margin: "0 auto",
+        }}
       >
         <Image
-          src="/images/compass.png"
+          src="/images/compass.png" // Replace with the actual compass image path
           alt="Compass"
-          width={288}
-          height={288}
-          className="w-full h-full"
-          priority
+          width={500}
+          height={500}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            transform: `rotate(${qiblaDirection}deg)`,
+          }}
         />
       </div>
       <div>
-        <h2 className="text-xl font-bold mb-4">Qibla Compass</h2>
-        <p>Heading: {Math.round(currentHeading)}°</p>
-        <p>Qibla Direction: {Math.round(qiblaDirection)}°</p>
+        <h2>Qibla Compass</h2>
+        <p>
+          Heading: <span ref={headingRef}>0</span>°
+        </p>
+        <p>
+          Qibla Direction: <span ref={qiblaDirectionRef}>0</span>°
+        </p>
         {!isCompassActive && (
           <button
-            className="mt-4 px-6 py-2 border-2 border-[#8B6C62] hover:bg-green-400 hover:text-black hover:shadow-xl transition-all"
+            style={{
+              border: "2px solid #8B6C62",
+              padding: "10px 20px",
+              fontSize: "16px",
+              marginTop: "20px",
+            }}
+            className="hover:shadow-xl hover:bg-green-400 hover:text-black"
             onClick={startCompass}
           >
             Start Qibla Compass
