@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { HomeIcon, Search, Bell, User } from "lucide-react";
+import { HomeIcon, Search, Bell } from "lucide-react";
 import AnimatedDock from "@/components/animata/container/animated-dock";
 import NavTabs from "@/components/animata/container/nav-tabs";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,7 @@ export default function RootLayout({
 
         {children}
         {/* AnimatedDock visible only on screens smaller than md */}
-        <div className="w-full fixed bottom-4 flex items-center justify-center border-t-[1px] border-white md:hidden">
+        <div className="w-full bg-black fixed bottom-0 pb-4 flex items-center justify-center border-t-[1px] border-white md:hidden">
           <AnimatedDock
             items={[
               {
@@ -46,19 +47,19 @@ export default function RootLayout({
                 title: "Home",
               },
               {
-                href: "/search",
+                href: "/collection",
                 icon: <Search />,
-                title: "Search",
+                title: "Collection",
               },
               {
-                href: "/notifications",
+                href: "/features",
                 icon: <Bell />,
-                title: "Notifications",
+                title: "Features",
               },
               {
-                href: "/profile",
-                icon: <User />,
-                title: "Profile",
+                href: "/qibla",
+                icon: <Image src="/kaaba-icon.svg" alt="Compass" height={500} width={500} className="h-6 w-6" />,
+                title: "Qibla",
               },
             ]}
           />
