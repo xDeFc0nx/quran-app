@@ -42,6 +42,8 @@ const QiblaCompass: React.FC = () => {
     | undefined;
 
   const startCompass = async () => {
+    if (typeof window === 'undefined') return;
+    
     if (!navigator.geolocation) {
       alert("Geolocation is not supported");
       return;
@@ -102,6 +104,10 @@ const QiblaCompass: React.FC = () => {
       (error) => alert("Error getting location: " + error.message)
     );
   };
+
+  useEffect(() => {
+    startCompass();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen text-center gap-5">
