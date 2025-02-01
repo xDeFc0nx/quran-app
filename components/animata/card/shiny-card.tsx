@@ -48,7 +48,7 @@ function ShinyCard({ mood }: { mood: Mood }) {
     <div
       ref={containerRef}
       className={cn(
-        "group relative w-96 h-80 min-w-fit max-w-full overflow-hidden rounded-md border border-border bg-zinc-700 p-6 text-zinc-200 shadow-lg"
+        "group relative w-72 h-80 min-w-fit max-w-full overflow-hidden rounded-3xl border border-border bg-zinc-700 p-6 text-zinc-200 shadow-lg"
       )}
       style={{
         backgroundImage: `url(${mood.backgroundImage})`,
