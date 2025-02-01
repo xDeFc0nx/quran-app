@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from '@/styles/mood.module.css';
-import { sadVerses } from '@/store/sad';
+import { angryVerses } from '@/store/angry';
 import Image from 'next/image';
 
 const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
@@ -28,12 +28,12 @@ const AngryMood = () => {
 
   // Generate random verse
   const generateRandomVerse = () => {
-    if (sadVerses.length === 0) {
+    if (angryVerses.length === 0) {
       alert('No more verses available!');
       return;
     }
-    const randomIndex = Math.floor(Math.random() * sadVerses.length);
-    const selectedVerse = sadVerses[randomIndex];
+    const randomIndex = Math.floor(Math.random() * angryVerses.length);
+    const selectedVerse = angryVerses[randomIndex];
     setVerse(selectedVerse.arabic);
     setTranslation(selectedVerse.translation);
     setAyahNumber(selectedVerse.reference);
