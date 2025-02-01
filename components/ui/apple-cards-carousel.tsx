@@ -34,7 +34,7 @@ const cards: Card[] = [
 
 export default function StaticCards() {
   return (
-    <div className="flex flex-row justify-center gap-4 py-10 mt-[-60px]">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-4 py-10 mt-[-100px] md:mx-5 md:mt-[-60px]">
       {cards.map((card, index) => (
         <Card key={index} card={card} />
       ))}
@@ -48,18 +48,18 @@ const Card = ({ card }: { card: Card }) => {
     <>
       <Link
         href={card.url}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
+        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative"
       >
         <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-        <div className="relative z-40 p-8">
-          <p className="text-white text-sm md:text-base font-medium font-sans text-left">
+        <div className="relative z-40 p-6 md:p-8">
+          <p className="text-xs md:text-sm text-gray-200 font-sans text-left">
             {card.category}
           </p>
           <p className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left font-sans mt-2">
             {card.title}
           </p>
         </div>
-        <BlurImage src={card.src} alt={card.title} fill className="object-cover absolute z-10 inset-0" />
+        <BlurImage src={card.src} alt={card.title} fill className="object-cover absolute inset-0" />
       </Link>
     </>
   );
