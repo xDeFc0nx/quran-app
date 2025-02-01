@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from '@/styles/mood.module.css';
-import Link from 'next/link';
-import Image from 'next/image';
 import { sadVerses } from '@/store/sad';
+import Image from 'next/image';
 
 const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
 
@@ -21,6 +20,7 @@ const RandomMood = () => {
       if (!response.ok) throw new Error('Failed to fetch image');
       const data = await response.json();
       setNatureImage(data.urls.regular);
+      return data;
     } catch (error) {
       console.error('Error fetching Unsplash image:', error instanceof Error ? error.message : error);
     }
@@ -48,23 +48,23 @@ const RandomMood = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} mb-20 md:mb-0 md:h-screen`}>
       {/* Home Button */}
-      <div className={styles.homeButtonContainer}>
+      {/* <div className={styles.homeButtonContainer}>
         <Link href="/" className={styles.homeButton}>
           Home
         </Link>
-      </div>
+      </div> */}
 
       {/* Mood Container */}
-      <div className={styles.moodContainer}>
+      <div className={`${styles.moodContainer}`}>
         <div className={styles.imageSection}>
           <Image src={natureImage} height={500} width={500} alt="Nature" className={styles.natureImage} />
         </div>
 
         <div className={styles.verseSection}>
-          <div className={styles.verse}>{verse || 'Click the button to generate a verse...'}</div>
-          <div className={styles.translation}>{translation}</div>
+          <div className={`${styles.verse} text-end md:text-center`}>{verse || 'Click the button to generate a verse...'}</div>
+          <div className={`${styles.translation} text-start md:text-center`}>{translation}</div>
           <div className={styles.ayahNumber}>{ayahNumber}</div>
           <button className={styles.generateButton} onClick={generateRandomVerse}>
             Generate Random Ayah
