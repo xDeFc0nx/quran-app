@@ -88,7 +88,7 @@ function DockIcon({
         onMouseMove={(e) => mouseXPosition.set(e.pageX)} // Update mouse X position on mouse move
         onMouseLeave={() => mouseXPosition.set(Infinity)} // Reset on mouse leave
         onMouseEnter={() => setIsHovered(true)} // Handle mouse enter
-        className="relative flex aspect-square items-center justify-center rounded-full bg-white/5 p-6 shadow-lg backdrop-blur-md text-white"
+        className="relative flex aspect-square items-center justify-center rounded-full hover:bg-white/5 shadow-lg backdrop-blur-md text-white"
       >
         <motion.div className="flex items-center justify-around">
           {icon} 
