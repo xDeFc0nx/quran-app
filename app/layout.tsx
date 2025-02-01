@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { HomeIcon, Search, Bell } from "lucide-react";
+import { HomeIcon, Search } from "lucide-react";
 import AnimatedDock from "@/components/animata/container/animated-dock";
 import NavTabs from "@/components/animata/container/nav-tabs";
 import Image from "next/image";
@@ -53,12 +53,12 @@ export default function RootLayout({
               },
               {
                 href: "/features",
-                icon: <Bell />,
+                icon: <Image src="/features.svg" alt="Compass" height={500} width={500} className="h-full w-full" />,
                 title: "Features",
               },
               {
                 href: "/qibla",
-                icon: <Image src="/kaaba-icon.svg" alt="Compass" height={500} width={500} className="h-6 w-6" />,
+                icon: <Image src="/kaaba-icon.svg" alt="Compass" height={500} width={500} className="h-full w-full" />,
                 title: "Qibla",
               },
             ]}
