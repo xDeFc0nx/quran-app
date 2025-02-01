@@ -15,7 +15,7 @@ const QiblaCompass: React.FC = () => {
   const qiblaDirectionRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    setIsMobileDevice(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    setIsMobileDevice(/iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent));
   }, []);
 
   const calculateQiblaDirection = (userLat: number, userLong: number): number => {
@@ -34,80 +34,77 @@ const QiblaCompass: React.FC = () => {
     return (qibla + 360) % 360;
   };
 
-  // Request permission for iOS & Safari
-  const deviceOrientationEvent = window.DeviceOrientationEvent as
-    | (typeof window.DeviceOrientationEvent & {
-        requestPermission?: () => Promise<"granted" | "denied">;
-      })
-    | undefined;
-
   const startCompass = async () => {
-    if (typeof window === 'undefined') return;
-    
-    if (!navigator.geolocation) {
+    if (typeof window === 'undefined' || !window.navigator?.geolocation) {
       alert("Geolocation is not supported");
       return;
     }
 
-    // iOS permission request
-    if (typeof deviceOrientationEvent?.requestPermission === 'function') {
-      const permission = await deviceOrientationEvent.requestPermission();
-      if (permission !== 'granted') {
-        alert("Permission denied for device orientation");
-        return;
+    // Request permission for iOS & Safari
+    const deviceOrientationEvent = window.DeviceOrientationEvent as
+      | (typeof window.DeviceOrientationEvent & {
+        requestPermission?: () => Promise<"granted" | "denied">;
+      })
+      | undefined;
+
+    try {
+      // iOS permission request
+      if (typeof deviceOrientationEvent?.requestPermission === 'function') {
+        const permission = await deviceOrientationEvent.requestPermission();
+        if (permission !== 'granted') {
+          alert("Permission denied for device orientation");
+          return;
+        }
       }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLong = position.coords.longitude;
+          const qiblaDir = calculateQiblaDirection(userLat, userLong);
+
+          if (qiblaDirectionRef.current) {
+            qiblaDirectionRef.current.textContent = qiblaDir.toFixed(1);
+          }
+
+          const handleOrientation = (event: DeviceOrientationEvent) => {
+            if (event.alpha === null) return;
+
+            const heading = event.alpha;
+            if (headingRef.current) {
+              headingRef.current.textContent = Math.round(heading).toString();
+            }
+
+            if (compassRef.current) {
+              gsap.to(compassRef.current, {
+                rotation: qiblaDir - heading,
+                duration: 0.3,
+                ease: "none"
+              });
+            }
+          };
+
+          if (isMobileDevice) {
+            window.addEventListener('deviceorientation', handleOrientation, true);
+          } else {
+            if (compassRef.current) {
+              gsap.to(compassRef.current, {
+                rotation: qiblaDir,
+                duration: 0.3,
+                ease: "none"
+              });
+            }
+          }
+
+          setIsCompassActive(true);
+        },
+        (error) => alert("Error getting location: " + error.message)
+      );
+    } catch (error) {
+      console.error('Error:', error);
+      alert("An error occurred while starting the compass");
     }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const userLat = position.coords.latitude;
-        const userLong = position.coords.longitude;
-        const qiblaDir = calculateQiblaDirection(userLat, userLong);
-
-        if (qiblaDirectionRef.current) {
-          qiblaDirectionRef.current.textContent = qiblaDir.toFixed(1);
-        }
-
-        const handleOrientation = (event: DeviceOrientationEvent) => {
-          if (event.alpha === null) return;
-
-          const heading = event.alpha;
-          if (headingRef.current) {
-            headingRef.current.textContent = Math.round(heading).toString();
-          }
-
-          if (compassRef.current) {
-            // Single rotation combining compass and qibla
-            gsap.to(compassRef.current, {
-              rotation: qiblaDir - heading,
-              duration: 0.3,
-              ease: "none"
-            });
-          }
-        };
-
-        if (isMobileDevice) {
-          window.addEventListener('deviceorientation', handleOrientation, true);
-        } else {
-          // Desktop fallback - static direction
-          if (compassRef.current) {
-            gsap.to(compassRef.current, {
-              rotation: qiblaDir,
-              duration: 0.3,
-              ease: "none"
-            });
-          }
-        }
-
-        setIsCompassActive(true);
-      },
-      (error) => alert("Error getting location: " + error.message)
-    );
   };
-
-  useEffect(() => {
-    startCompass();
-  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen text-center gap-5">
