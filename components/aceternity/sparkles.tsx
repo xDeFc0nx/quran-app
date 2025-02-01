@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { SparklesCore } from "../ui/sparkles";
+import { TextGenerator } from "./text-generator";
 
 type SparkleProp = {
     name: string;
@@ -9,9 +10,10 @@ type SparkleProp = {
 export function Sparkles({name}: SparkleProp) {
     return (
         <div className="w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-            <h1 className="text-2xl md:text-5xl font-bold text-center text-white relative z-20">
+            {/* <h1 className="text-2xl md:text-5xl font-bold text-center text-white relative z-20">
                 {name}
-            </h1>
+            </h1> */}
+            <TextGenerator text={name} />
             <div className="w-[40rem] h-24 relative">
                 {/* Gradients */}
                 <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
