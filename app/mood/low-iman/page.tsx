@@ -79,8 +79,8 @@ const RandomMood = () => {
           <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/angry')}>
             Angry
           </button>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/low-iman')}>
-            Low Iman
+          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/sad')}>
+            Sad
           </button>
           <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/reward')}>
             Reward
