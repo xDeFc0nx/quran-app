@@ -1,72 +1,94 @@
 "use client";
 
-import React, { useState } from "react";
-import styles from "@/styles/mood.module.css";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react';
+import styles from '@/styles/mood.module.css';
+import { sadVerses } from '@/store/sad';
+import Image from 'next/image';
 
-interface AyahData {
-  ayah: string;
-  translation: string;
-  surah: string;
-  ayahNumber: number;
-  image: string;
-}
+const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
 
-const RandomAyahPage: React.FC = () => {
-  const [ayahData, setAyahData] = useState<AyahData | null>(null);
-  const [loading, setLoading] = useState(false);
+const RewardMood = () => {
+  const [verse, setVerse] = useState('');
+  const [translation, setTranslation] = useState('');
+  const [ayahNumber, setAyahNumber] = useState('');
+  const [natureImage, setNatureImage] = useState('/images/happy-man.jpg');
 
-  const fetchRandomAyah = async () => {
-    setLoading(true);
+  const fetchNatureImage = async () => {
+    const UNSPLASH_API_URL = `https://api.unsplash.com/photos/random?query=nature&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
     try {
-      const response = await fetch("/random-ayah");
-      // if (!response.ok) throw new Error("Failed to fetch Ayah");
-      const data: AyahData = await response.json();
-      setAyahData(data);
+      const response = await fetch(UNSPLASH_API_URL);
+      if (!response.ok) throw new Error('Failed to fetch image');
+      const data = await response.json();
+      setNatureImage(data.urls.regular);
+      return data;
     } catch (error) {
-      console.error("Error fetching random Ayah:", error);
-      alert("Failed to fetch Ayah. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error('Error fetching Unsplash image:', error instanceof Error ? error.message : error);
     }
   };
 
+  // Generate random verse
+  const generateRandomVerse = () => {
+    if (sadVerses.length === 0) {
+      alert('No more verses available!');
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * sadVerses.length);
+    const selectedVerse = sadVerses[randomIndex];
+    setVerse(selectedVerse.arabic);
+    setTranslation(selectedVerse.translation);
+    setAyahNumber(selectedVerse.reference);
+
+    // Fetch a new nature image
+    fetchNatureImage();
+  };
+
+  useEffect(() => {
+    // Fetch an initial image only on the client side
+    fetchNatureImage();
+  }, []);
+
   return (
-    <div className="h-screen flex flex-col justify-center items-center">
-      <h1 className={styles.title}>Generate Random Quran Ayah</h1>
+    <div className={`${styles.container} mb-20 md:mb-0 md:h-screen`}>
+      {/* Home Button */}
+      {/* <div className={styles.homeButtonContainer}>
+        <Link href="/" className={styles.homeButton}>
+          Home
+        </Link>
+      </div> */}
 
-      <div className={styles.imageSection}>
-        <Image
-          src={ayahData?.image || "/images/jump.gif"}
-          height={500}
-          width={500}
-          alt="Nature"
-          className={styles.image}
-        />
+      {/* Mood Container */}
+      <div className={`${styles.moodContainer}`}>
+        <div className={styles.imageSection}>
+          <Image src={natureImage} height={500} width={500} alt="Nature" className={styles.natureImage} />
+        </div>
+
+        <div className={styles.verseSection}>
+          <div className={`${styles.verse} text-end md:text-center`}>{verse || 'Click the button to generate a verse...'}</div>
+          <div className={`${styles.translation} text-start md:text-center`}>{translation}</div>
+          <div className={styles.ayahNumber}>{ayahNumber}</div>
+          <button className={styles.generateButton} onClick={generateRandomVerse}>
+            Generate Random Ayah
+          </button>
+        </div>
       </div>
 
-      <div className={styles.ayahSection}>
-        {loading ? (
-          <p>Loading...</p>
-        ) : ayahData ? (
-          <>
-            <p className={styles.arabic}>{ayahData.ayah}</p>
-            <p className={styles.translation}>
-              <strong>Surah {ayahData.surah}, Ayah {ayahData.ayahNumber}</strong>
-              <br />
-              {ayahData.translation}
-            </p>
-          </>
-        ) : (
-          <p>Click the button to generate a random Ayah...</p>
-        )}
+      {/* Bottom Bar */}
+      <div className={styles.bottomBar}>
+        <h3 className={styles.bottomBarTitle}>Select Other Moods</h3>
+        <div className={styles.bottomBarButtons}>
+          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/angry')}>
+            Angry
+          </button>
+          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/low-iman')}>
+            Low Iman
+          </button>
+          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/sad')}>
+            Sad
+          </button>
+        </div>
       </div>
-
-      <button onClick={fetchRandomAyah} className={styles.button}>
-        Generate Random Ayah
-      </button>
     </div>
   );
 };
 
-export default RandomAyahPage; // This must be the default export
+export default RewardMood;
