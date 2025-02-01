@@ -38,7 +38,7 @@ export default function RootLayout({
 
         {children}
         {/* AnimatedDock visible only on screens smaller than md */}
-        <div className="w-full bg-black fixed bottom-0 pb-4 flex items-center justify-center border-t-[1px] border-white md:hidden">
+        <div className="w-full bg-black fixed bottom-0 pb-4 flex items-center justify-center border-t-[1px] border-white md:hidden z-50">
           <AnimatedDock
             items={[
               {
