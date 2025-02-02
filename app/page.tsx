@@ -1,9 +1,9 @@
-import { HeroSection } from "@/components/aceternity/hero-section";
+import { AuroraBackgroundDemo } from "@/components/aceternity/aurora-background";
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
+      <AuroraBackgroundDemo />
     </>
   );
 }

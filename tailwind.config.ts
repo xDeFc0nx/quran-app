@@ -1,20 +1,16 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 
-// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+// This plugin adds each Tailwind color as a global CSS variable, e.g., var(--gray-200).
+const addVariablesForColors = plugin(({ addBase, theme }) => {
+  const colors = flattenColorPalette(theme("colors")) as Record<string, string>;
+  const newVars = Object.fromEntries(
+    Object.entries(colors).map(([key, val]) => [`--${key}`, val])
   );
 
-  addBase({
-    ":root": newVars,
-  });
-}
-
-const {
-  default: flattenColorPalette,
-} = require("tailwindcss/lib/util/flattenColorPalette");
+  addBase({ ":root": newVars });
+});
 
 export default {
   content: [
@@ -26,15 +22,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        navyBlue: "#05081C",
-        blue: "#0A0D36",
-        lightBlue: "#0F1042",
-        exBlue: "#0E1D3E",
-        logoGray: "#634E4F",
-        logoBlue: "#65969E",
-        logoWhite: "#FCFFFF",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -63,9 +55,6 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
@@ -103,5 +92,5 @@ export default {
       },
     },
   },
-  plugins: [addVariablesForColors, require("tailwindcss-animate")],
+  plugins: [addVariablesForColors],
 } satisfies Config;
