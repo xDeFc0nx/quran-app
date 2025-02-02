@@ -13,19 +13,19 @@ interface Card {
 
 const cards: Card[] = [
   {
-    src: "/images/happy-man.jpg",
+    src: "/images/mood.jpg",
     title: "Mood Selector",
     category: "Study quran based on your mood",
     url: "/features",
   },
   {
-    src: "/images/kaaba.jpg",
+    src: "/images/qibla-direction.jpg",
     title: "Qibla Direction",
     category: "Checkout Qibla direction",
     url: "/qibla",
   },
   {
-    src: "/images/world.gif",
+    src: "/images/random-ayah.jpg",
     title: "Ayah Generator",
     category: "Generator Random Ayahs",
     url: "/ayah-generator",
