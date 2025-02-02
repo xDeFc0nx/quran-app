@@ -29,7 +29,8 @@ const QiblaCompass: React.FC = () => {
           width={500}
           height={500}
           className="absolute w-full h-full"
-          priority
+          loading="lazy"
+          priority={false}
         />
       </div>
       <div>

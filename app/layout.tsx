@@ -54,12 +54,32 @@ export default function RootLayout({
               },
               {
                 href: "/features",
-                icon: <Image src="/features.svg" alt="Compass" height={500} width={500} className="h-full w-full" />,
+                icon: (
+                  <Image
+                    src="/features.svg"
+                    alt="Compass"
+                    height={500}
+                    width={500}
+                    className="h-full w-full"
+                    loading="lazy"
+                    priority={false}
+                  />
+                ),
                 title: "Features",
               },
               {
                 href: "/qibla",
-                icon: <Image src="/kaaba-icon.svg" alt="Compass" height={500} width={500} className="h-full w-full" />,
+                icon: (
+                  <Image
+                    src="/kaaba-icon.svg"
+                    alt="Compass"
+                    height={500}
+                    width={500}
+                    className="h-full w-full"
+                    loading="lazy"
+                    priority={false}
+                  />
+                ),
                 title: "Qibla",
               },
             ]}

@@ -59,7 +59,15 @@ const AngryMood = () => {
       {/* Mood Container */}
       <div className={`${styles.moodContainer}`}>
         <div className={styles.imageSection}>
-          <Image src={natureImage} height={500} width={500} alt="Nature" className={styles.natureImage} />
+          <Image
+            src={natureImage}
+            height={500}
+            width={500}
+            alt="Nature"
+            className={styles.natureImage}
+            loading="lazy"
+            priority={false}
+          />
         </div>
 
         <div className={styles.verseSection}>

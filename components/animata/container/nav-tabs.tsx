@@ -23,11 +23,16 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
   }, [pathname]);
 
   return (
-    <div
-      className="fixed top-0 left-0 z-50 w-full flex flex-wrap items-center text-center justify-around gap-4 p-4 bg-transparent"
-    >
+    <div className="fixed top-0 left-0 z-50 w-full flex flex-wrap items-center text-center justify-around gap-4 p-4 bg-transparent">
       <Link href="/">
-        <Image src="/logo.png" alt="Logo" width={100} height={100} />
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={100}
+          height={100}
+          loading="lazy"
+          priority={false}
+        />
       </Link>
       <div className="flex space-x-4">
         {tabs.map((tab) => (
@@ -43,7 +48,6 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
     </div>
   );
 }
-
 
 const Tab = ({ text, selected, onClick, href }: TabProps) => {
   return (

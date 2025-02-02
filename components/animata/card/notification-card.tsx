@@ -54,6 +54,8 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               width={500}
               height={500}
               className="h-14 w-14 rounded-full border-2 border-white"
+              loading="lazy"
+              priority={false}
             />
             <div>
               <h4 className="text-sm font-semibold text-white">{userInfo.name}</h4>

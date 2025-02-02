@@ -75,6 +75,7 @@ const BlurImage = ({ height, width, src, className, alt, ...rest }: ImageProps) 
       width={width}
       height={height}
       loading="lazy"
+      priority={false}
       decoding="async"
       blurDataURL={typeof src === "string" ? src : undefined}
       alt={alt || "Background image"}

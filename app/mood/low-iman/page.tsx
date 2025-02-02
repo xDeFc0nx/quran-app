@@ -1,35 +1,38 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import styles from '@/styles/mood.module.css';
-import { lowImanVerses } from '@/store/lowiman';
-import Image from 'next/image';
+import React, { useState, useEffect } from "react";
+import styles from "@/styles/mood.module.css";
+import { lowImanVerses } from "@/store/lowiman";
+import Image from "next/image";
 
-const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
+const UNSPLASH_ACCESS_KEY = "J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA";
 
 const RandomMood = () => {
-  const [verse, setVerse] = useState('');
-  const [translation, setTranslation] = useState('');
-  const [ayahNumber, setAyahNumber] = useState('');
-  const [natureImage, setNatureImage] = useState('/images/happy-man.jpg');
+  const [verse, setVerse] = useState("");
+  const [translation, setTranslation] = useState("");
+  const [ayahNumber, setAyahNumber] = useState("");
+  const [natureImage, setNatureImage] = useState("/images/happy-man.jpg");
 
   const fetchNatureImage = async () => {
     const UNSPLASH_API_URL = `https://api.unsplash.com/photos/random?query=nature&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
     try {
       const response = await fetch(UNSPLASH_API_URL);
-      if (!response.ok) throw new Error('Failed to fetch image');
+      if (!response.ok) throw new Error("Failed to fetch image");
       const data = await response.json();
       setNatureImage(data.urls.regular);
       return data;
     } catch (error) {
-      console.error('Error fetching Unsplash image:', error instanceof Error ? error.message : error);
+      console.error(
+        "Error fetching Unsplash image:",
+        error instanceof Error ? error.message : error
+      );
     }
   };
 
   // Generate random verse
   const generateRandomVerse = () => {
     if (lowImanVerses.length === 0) {
-      alert('No more verses available!');
+      alert("No more verses available!");
       return;
     }
     const randomIndex = Math.floor(Math.random() * lowImanVerses.length);
@@ -59,14 +62,29 @@ const RandomMood = () => {
       {/* Mood Container */}
       <div className={`${styles.moodContainer}`}>
         <div className={styles.imageSection}>
-          <Image src={natureImage} height={500} width={500} alt="Nature" className={styles.natureImage} />
+          <Image
+            src={natureImage}
+            height={500}
+            width={500}
+            alt="Nature"
+            className={styles.natureImage}
+            loading="lazy"
+            priority={false}
+          />
         </div>
 
         <div className={styles.verseSection}>
-          <div className={`${styles.verse} text-end md:text-center`}>{verse || 'Click the button to generate a verse...'}</div>
-          <div className={`${styles.translation} text-start md:text-center`}>{translation}</div>
+          <div className={`${styles.verse} text-end md:text-center`}>
+            {verse || "Click the button to generate a verse..."}
+          </div>
+          <div className={`${styles.translation} text-start md:text-center`}>
+            {translation}
+          </div>
           <div className={styles.ayahNumber}>{ayahNumber}</div>
-          <button className={styles.generateButton} onClick={generateRandomVerse}>
+          <button
+            className={styles.generateButton}
+            onClick={generateRandomVerse}
+          >
             Generate Random Ayah
           </button>
         </div>
@@ -76,13 +94,22 @@ const RandomMood = () => {
       <div className={styles.bottomBar}>
         <h3 className={styles.bottomBarTitle}>Select Other Moods</h3>
         <div className={styles.bottomBarButtons}>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/angry')}>
+          <button
+            className={styles.bottomButton}
+            onClick={() => (window.location.href = "/mood/angry")}
+          >
             Angry
           </button>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/sad')}>
+          <button
+            className={styles.bottomButton}
+            onClick={() => (window.location.href = "/mood/sad")}
+          >
             Sad
           </button>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/reward')}>
+          <button
+            className={styles.bottomButton}
+            onClick={() => (window.location.href = "/mood/reward")}
+          >
             Reward
           </button>
         </div>
