@@ -1,52 +1,31 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import styles from '@/styles/mood.module.css';
-import { angryVerses } from '@/store/angry';
-import Image from 'next/image';
-import StaticButton from '@/components/static-button';
-
-const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
+import React, { useEffect } from "react";
+import styles from "@/styles/mood.module.css";
+import { angryVerses } from "@/store/angry";
+import Image from "next/image";
+import StaticButton from "@/components/static-button";
+import { useMoodStore } from "@/store/useMoodStore";
 
 const AngryMood = () => {
-  const [verse, setVerse] = useState('');
-  const [translation, setTranslation] = useState('');
-  const [ayahNumber, setAyahNumber] = useState('');
-  const [natureImage, setNatureImage] = useState('/images/happy-man.jpg');
-
-  const fetchNatureImage = async () => {
-    const UNSPLASH_API_URL = `https://api.unsplash.com/photos/random?query=nature&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
-    try {
-      const response = await fetch(UNSPLASH_API_URL);
-      if (!response.ok) throw new Error('Failed to fetch image');
-      const data = await response.json();
-      setNatureImage(data.urls.regular);
-      return data;
-    } catch (error) {
-      console.error('Error fetching Unsplash image:', error instanceof Error ? error.message : error);
-    }
-  };
+  const { verse, translation, ayahNumber, natureImage, fetchNatureImage, setVerse } = useMoodStore();
 
   // Generate random verse
   const generateRandomVerse = () => {
     if (angryVerses.length === 0) {
-      alert('No more verses available!');
+      alert("No more verses available!");
       return;
     }
     const randomIndex = Math.floor(Math.random() * angryVerses.length);
     const selectedVerse = angryVerses[randomIndex];
-    setVerse(selectedVerse.arabic);
-    setTranslation(selectedVerse.translation);
-    setAyahNumber(selectedVerse.reference);
 
-    // Fetch a new nature image
-    fetchNatureImage();
+    setVerse(selectedVerse.arabic, selectedVerse.translation, selectedVerse.reference);
+    fetchNatureImage(); // Fetch a new nature image
   };
 
   useEffect(() => {
-    // Fetch an initial image only on the client side
-    fetchNatureImage();
-  }, []);
+    fetchNatureImage(); // Fetch an initial image on mount
+  }, [fetchNatureImage]);
 
   return (
     <div className={`${styles.container} mb-20 md:mb-0 md:h-screen`}>
@@ -64,7 +43,9 @@ const AngryMood = () => {
         </div>
 
         <div className={styles.verseSection}>
-          <div className={`${styles.verse} text-end md:text-center`}>{verse || 'Click the button to generate a verse...'}</div>
+          <div className={`${styles.verse} text-end md:text-center`}>
+            {verse || "Click the button to generate a verse..."}
+          </div>
           <div className={`${styles.translation} text-start md:text-center`}>{translation}</div>
           <div className={styles.ayahNumber}>{ayahNumber}</div>
           <button className={styles.generateButton} onClick={generateRandomVerse}>
@@ -76,9 +57,9 @@ const AngryMood = () => {
       <div className={styles.bottomBar}>
         <h3 className={styles.bottomBarTitle}>Select Other Moods</h3>
         <div className={styles.bottomBarButtons}>
-          <StaticButton href='/mood/sad' name='Sad' />
-          <StaticButton href='/mood/low-iman' name='Low iman' />
-          <StaticButton href='/mood/reward' name='Reward' />
+          <StaticButton href="/mood/sad" name="Sad" />
+          <StaticButton href="/mood/low-iman" name="Low iman" />
+          <StaticButton href="/mood/reward" name="Reward" />
         </div>
       </div>
     </div>
