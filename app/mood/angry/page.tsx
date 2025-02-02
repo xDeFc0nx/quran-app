@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '@/styles/mood.module.css';
 import { angryVerses } from '@/store/angry';
 import Image from 'next/image';
+import StaticButton from '@/components/static-button';
 
 const UNSPLASH_ACCESS_KEY = 'J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA';
 
@@ -49,14 +50,6 @@ const AngryMood = () => {
 
   return (
     <div className={`${styles.container} mb-20 md:mb-0 md:h-screen`}>
-      {/* Home Button */}
-      {/* <div className={styles.homeButtonContainer}>
-        <Link href="/" className={styles.homeButton}>
-          Home
-        </Link>
-      </div> */}
-
-      {/* Mood Container */}
       <div className={`${styles.moodContainer}`}>
         <div className={styles.imageSection}>
           <Image
@@ -80,19 +73,12 @@ const AngryMood = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className={styles.bottomBar}>
         <h3 className={styles.bottomBarTitle}>Select Other Moods</h3>
         <div className={styles.bottomBarButtons}>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/sad')}>
-            Sad
-          </button>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/low-iman')}>
-            Low Iman
-          </button>
-          <button className={styles.bottomButton} onClick={() => (window.location.href = '/mood/reward')}>
-            Reward
-          </button>
+          <StaticButton href='/mood/sad' name='Sad' />
+          <StaticButton href='/mood/low-iman' name='Low iman' />
+          <StaticButton href='/mood/reward' name='Reward' />
         </div>
       </div>
     </div>

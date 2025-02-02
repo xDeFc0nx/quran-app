@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "@/styles/mood.module.css";
 import { rewardVerses } from "@/store/reward";
 import Image from "next/image";
+import StaticButton from "@/components/static-button";
 
 const UNSPLASH_ACCESS_KEY = "J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA";
 
@@ -94,24 +95,10 @@ const RewardMood = () => {
       <div className={styles.bottomBar}>
         <h3 className={styles.bottomBarTitle}>Select Other Moods</h3>
         <div className={styles.bottomBarButtons}>
-          <button
-            className={styles.bottomButton}
-            onClick={() => (window.location.href = "/mood/angry")}
-          >
-            Angry
-          </button>
-          <button
-            className={styles.bottomButton}
-            onClick={() => (window.location.href = "/mood/low-iman")}
-          >
-            Low Iman
-          </button>
-          <button
-            className={styles.bottomButton}
-            onClick={() => (window.location.href = "/mood/sad")}
-          >
-            Sad
-          </button>
+
+          <StaticButton href='/mood/sad' name='Sad' />
+          <StaticButton href='/mood/low-iman' name='Low iman' />
+          <StaticButton href='/mood/angry' name='Angry' />
         </div>
       </div>
     </div>
