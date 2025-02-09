@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation"; // Use next/navigation
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { cn } from "../../../lib/utils";
 import Image from "next/image";
 import Link from "next/link";

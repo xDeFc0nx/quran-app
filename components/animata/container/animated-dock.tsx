@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-} from "framer-motion";
+} from "motion/react";
 import Link from "next/link"; // Next.js Link component for navigation
 import React, { useRef, useState } from "react"; // Importing React hooks
 
