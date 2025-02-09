@@ -1,12 +1,20 @@
+import { webpack } from "next/dist/compiled/webpack/webpack";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: [
-      "via.placeholder.com", // Allow placeholder images
-      "images.unsplash.com", // Allow Unsplash images
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
     formats: ["image/avif", "image/webp"], // Enable modern image formats for optimization
   },

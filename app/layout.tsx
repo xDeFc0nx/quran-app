@@ -6,6 +6,9 @@ import AnimatedDock from "@/components/animata/container/animated-dock";
 import NavTabs from "@/components/animata/container/nav-tabs";
 import Image from "next/image";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { memo } from "react";
+const MemoizedNavTabs = memo(NavTabs);
+const MemoizedAnimatedDock = memo(AnimatedDock);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,13 +37,13 @@ export default function RootLayout({
       >
         {/* NavTabs visible only on md and larger screens */}
         <div className="hidden md:block">
-          <NavTabs tabs={["Home", "Collection", "Features", "Qibla"]} />
+          <MemoizedNavTabs tabs={["Home", "Collection", "Features", "Qibla"]} />
         </div>
 
         {children}
         {/* AnimatedDock visible only on screens smaller than md */}
         <div className="w-full bg-black fixed bottom-0 pb-4 flex items-center justify-center border-t-[1px] border-white md:hidden z-50">
-          <AnimatedDock
+          <MemoizedAnimatedDock
             items={[
               {
                 href: "/",
@@ -62,7 +65,8 @@ export default function RootLayout({
                     width={500}
                     className="h-full w-full"
                     loading="lazy"
-                    priority={false}
+                    // layout="intrinsic"
+                    // priority={false}
                   />
                 ),
                 title: "Features",
@@ -77,7 +81,8 @@ export default function RootLayout({
                     width={500}
                     className="h-full w-full"
                     loading="lazy"
-                    priority={false}
+                    // layout="intrinsic"
+                    // priority={false}
                   />
                 ),
                 title: "Qibla",
