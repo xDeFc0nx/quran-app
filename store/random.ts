@@ -1,71 +1,79 @@
-const unsplashApiKey = "J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA"; // Replace with your Unsplash API Key
-const SURAH_URL = "https://api.alquran.cloud/v1/surah/"; // Correct Quran API URL
-const TOTAL_SURAHS = 114; // Total number of surahs in the Quran
+import { create } from "zustand";
 
-let totalAyahs;
-let surahNumber;
-let ayahNumber;
-let ayah;
-let translatedAyah;
+const UNSPLASH_API_KEY = "J1fVSClatIlHRo-UUQUm6CCWrF9Rd16sNnwW4yL6tiA"; // Replace with your key
+const SURAH_URL = "https://api.alquran.cloud/v1/surah/";
+const TOTAL_SURAHS = 114;
 
-// Function to fetch random Ayah and image
-async function generateRandomContent() {
-  try {
-    console.log("Fetching random Ayah...");
-    surahNumber = Math.floor(Math.random() * TOTAL_SURAHS) + 1; // Random Surah number
-    const surahResponse = await fetch(SURAH_URL + surahNumber);
-
-    if (!surahResponse.ok) {
-      throw new Error(`Quran API Error: ${surahResponse.statusText}`);
-    }
-    const surahData = await surahResponse.json();
-    totalAyahs = surahData.data.ayahs.length;
-    ayahNumber = Math.floor(Math.random() * totalAyahs);
-    ayah = surahData.data.ayahs[ayahNumber].text;
-
-    await translateAyah();
-
-    console.log("Fetching random Unsplash image...");
-    const imageResponse = await fetch(
-      `https://api.unsplash.com/photos/random?query=nature&client_id=${unsplashApiKey}`
-    );
-
-    if (!imageResponse.ok) {
-      throw new Error(`Unsplash API Error: ${imageResponse.statusText}`);
-    }
-    const imageData = await imageResponse.json();
-
-    const imageUrl = imageData.urls.regular;
-    const imageElement = document.getElementById("nature-image");
-    if (imageElement) {
-      imageElement.src = imageUrl;
-    }
-
-    console.log("Random content successfully fetched and updated.");
-  } catch (error) {
-    console.error("Error fetching random content:", error.message);
-    alert(`Error: ${error.message}. Please try again.`);
-  }
+// Type Definitions
+interface Ayah {
+  number: number;
+  text: string;
 }
 
-// Translate the randomly selected Ayah
-async function translateAyah() {
-  try {
-    const translationResponse = await fetch(
-      `${SURAH_URL}${surahNumber}/en.sahih`
-    );
+interface SurahResponse {
+  data: {
+    ayahs: Ayah[];
+  };
+}
 
-    if (!translationResponse.ok) {
-      throw new Error(
-        `Quran Translation API Error: ${translationResponse.statusText}`
+interface TranslationResponse {
+  data: {
+    ayahs: Ayah[];
+  };
+}
+
+interface UnsplashImage {
+  urls: {
+    regular: string;
+  };
+}
+
+// Zustand Store
+interface RandomStore {
+  ayah: string;
+  translatedAyah: string;
+  imageUrl: string;
+  fetchRandomContent: () => Promise<void>;
+}
+
+export const useRandomStore = create<RandomStore>((set) => ({
+  ayah: "",
+  translatedAyah: "",
+  imageUrl: "",
+  
+  fetchRandomContent: async () => {
+    try {
+      const surahNumber = Math.floor(Math.random() * TOTAL_SURAHS) + 1;
+      const surahRes = await fetch(`${SURAH_URL}${surahNumber}`);
+      if (!surahRes.ok) throw new Error("Failed to fetch Surah");
+
+      const surahData: SurahResponse = await surahRes.json();
+      const totalAyahs = surahData.data.ayahs.length;
+      const ayahIndex = Math.floor(Math.random() * totalAyahs);
+      const selectedAyah = surahData.data.ayahs[ayahIndex];
+
+      const translationRes = await fetch(`${SURAH_URL}${surahNumber}/en.sahih`);
+      if (!translationRes.ok) throw new Error("Failed to fetch translation");
+
+      const translationData: TranslationResponse = await translationRes.json();
+      const translatedText = translationData.data.ayahs[ayahIndex]?.text || "Translation not available";
+
+      const imageRes = await fetch(
+        `https://api.unsplash.com/photos/random?query=nature&client_id=${UNSPLASH_API_KEY}`
       );
-    }
-    const translationData = await translationResponse.json();
-    translatedAyah = translationData.data.ayahs[ayahNumber]?.text || "Translation not available";
+      if (!imageRes.ok) throw new Error("Failed to fetch image");
 
-    printToHTML();
-  } catch (error) {
-    console.error("Error translating Ayah:", error.message);
-    throw error;
-  }
-}
+      const imageData: UnsplashImage = await imageRes.json();
+
+      // Update Zustand state
+      set({
+        ayah: selectedAyah.text,
+        translatedAyah: translatedText,
+        imageUrl: imageData.urls.regular,
+      });
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  },
+}));
