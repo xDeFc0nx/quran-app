@@ -5,7 +5,6 @@ import { HomeIcon, Search } from "lucide-react";
 import AnimatedDock from "@/components/animata/container/animated-dock";
 import NavTabs from "@/components/animata/container/nav-tabs";
 import Image from "next/image";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { memo } from "react";
 const MemoizedNavTabs = memo(NavTabs);
 const MemoizedAnimatedDock = memo(AnimatedDock);
@@ -90,7 +89,6 @@ export default function RootLayout({
             ]}
           />
         </div>
-        <BackgroundBeams />
       </body>
     </html>
   );
